@@ -1,6 +1,6 @@
 from django.shortcuts import render
 from rest_framework.views import APIView
-from .serializers import RegistrationSerializer, ActivationSerializer, UserSerializer
+from .serializers import RegistrationSerializer, ActivationSerializer, UserSerializer, RegistrationPhoneSerializer
 from rest_framework.response import Response
 from .send_email import send_confirmation_email
 from rest_framework.generics import GenericAPIView, get_object_or_404
@@ -65,3 +65,11 @@ class LogoutView(APIView):
             return Response(status=status.HTTP_205_RESET_CONTENT)
         except Exception as e:
             return Response(status=status.HTTP_400_BAD_REQUEST)
+
+class RegistrationPhoneView(APIView):
+    def post(self, request):
+        data = request.data
+        serializer = RegistrationPhoneSerializer(data=data)
+        if serializer.is_valid(raise_exception=True):
+            serializer.save()
+            return Response('Успешно зарегистрирован', status=201)

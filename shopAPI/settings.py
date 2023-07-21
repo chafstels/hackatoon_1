@@ -44,6 +44,7 @@ INSTALLED_APPS = [
     'drf_yasg',
     'rest_framework_simplejwt',
     'rest_framework_simplejwt.token_blacklist',
+    'twilio',
 
     #myapp
     'account',
@@ -159,3 +160,6 @@ EMAIL_USE_TLS = True
 EMAIL_HOST_USER = config('EMAIL_HOST_USER')
 EMAIL_HOST_PASSWORD = config('EMAIL_HOST_PASSWORD')
 
+TWILIO_SID = 'AC604586bbcc9ab37b1bd4655bfabc9508'
+TWILIO_AUTH_TOKEN = '4c808935bebfe92c7dc62b96f0b113c1'
+TWILIO_SENDER_PHONE = '+12176347024'

@@ -42,6 +42,7 @@ class CustomUser(AbstractUser):
     last_name = models.CharField(max_length=100)
     avatar = models.ImageField(upload_to='avatars', blank=True)
     is_active = models.BooleanField(default=False, help_text='This field is used to activate the user')
+    phone_number = models.CharField(max_length=25, blank=True, null=True, unique=True)
 
     objects = UserManager()
 
