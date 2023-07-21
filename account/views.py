@@ -1,6 +1,6 @@
 from django.shortcuts import render
 from rest_framework.views import APIView
-from .serializers import RegistrationSerializer, ActivationSerializer, UserSerializer
+from .serializers import RegistrationSerializer, ActivationSerializer, UserSerializer, RegistrationPhoneSerializer
 from rest_framework.response import Response
 from .send_email import send_confirmation_email
 from rest_framework.generics import GenericAPIView, get_object_or_404
@@ -8,7 +8,8 @@ from django.contrib.auth import get_user_model
 from rest_framework_simplejwt.views import TokenObtainPairView
 from rest_framework import permissions
 from rest_framework.generics import ListAPIView
-
+from rest_framework_simplejwt.tokens import RefreshToken
+from rest_framework import status
 User = get_user_model()
 
 
@@ -51,3 +52,24 @@ class UserListView(ListAPIView):
     queryset = User.objects.all()
     serializer_class = UserSerializer
     permission_classes = (permissions.IsAdminUser,)
+
+class LogoutView(APIView):
+    permission_classes = (permissions.IsAuthenticated,)
+
+    def post(self, request):
+        try:
+            refresh_token = request.data["refresh_token"]
+            token = RefreshToken(refresh_token)
+            token.blacklist()
+
+            return Response(status=status.HTTP_205_RESET_CONTENT)
+        except Exception as e:
+            return Response(status=status.HTTP_400_BAD_REQUEST)
+
+class RegistrationPhoneView(APIView):
+    def post(self, request):
+        data = request.data
+        serializer = RegistrationPhoneSerializer(data=data)
+        if serializer.is_valid(raise_exception=True):
+            serializer.save()
+            return Response('Успешно зарегистрирован', status=201)
