@@ -21,7 +21,7 @@ from drf_yasg import openapi
 from rest_framework import permissions
 from rest_framework.routers import DefaultRouter
 from category.views import CategoryViewSet
-from product.views import ProductViewSet
+from books.views import BookViewSet
 from django.conf.urls.static import static
 from django.conf import settings
 
@@ -33,20 +33,21 @@ schema_view = get_schema_view(
         terms_of_service="https://www.google.com/policies/terms/",
         contact=openapi.Contact(email="contact@snippets.local"),
         license=openapi.License(name="BSD License"),
-   ),
+    ),
     public=True,
-    permission_classes= [permissions.AllowAny,]
+    permission_classes=[permissions.AllowAny, ]
 
 )
 
 router = DefaultRouter()
 router.register('categories', CategoryViewSet)
-router.register('products', ProductViewSet)
+router.register('books', BookViewSet)
 
 urlpatterns = [
     path("admin/", admin.site.urls),
     path('docs/', schema_view.with_ui('swagger', cache_timeout=0), name='schema-swagger-ui'),
     path("api/account/", include('account.urls')),
+    path('api/comment/', include('comment.urls')),
     path('api/', include(router.urls)),
 ]
 

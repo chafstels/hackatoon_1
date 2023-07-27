@@ -3,7 +3,7 @@ from .models import Rating
 
 class RatingSerializer(serializers.ModelSerializer):
     owner = serializers.ReadOnlyField(source='owner.email')
-    product = serializers.ReadOnlyField(source='product.title')
+    book = serializers.ReadOnlyField(source='book.title')
 
     class Meta:
         model = Rating

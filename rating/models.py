@@ -1,6 +1,6 @@
 from django.contrib.auth import get_user_model
 from django.db import models
-from product.models import Product
+from books.models import Book
 
 
 User = get_user_model()
@@ -15,11 +15,11 @@ class Rating(models.Model):
         (5, 'Excellent'),
     )
 
-    product = models.ForeignKey(Product, related_name='ratings',
+    book = models.ForeignKey(Book, related_name='ratings',
                                 on_delete=models.CASCADE)
     owner = models.ForeignKey(User, related_name='ratings', on_delete=models.CASCADE)
     rating = models.PositiveSmallIntegerField(choices=RATING_CHOICES)
     created_at = models.DateTimeField(auto_now_add=True)
 
     class Meta:
-        unique_together = ['owner', 'product']
+        unique_together = ['owner', 'book']
