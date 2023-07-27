@@ -46,6 +46,7 @@ INSTALLED_APPS = [
     'rest_framework_simplejwt.token_blacklist',
     'twilio',
     "corsheaders",
+    "django_filters",
 
     #myapp
     'account',
@@ -53,6 +54,8 @@ INSTALLED_APPS = [
     'rating',
     'books',
     'payment',
+    'comment',
+    'like',
 ]
 
 MIDDLEWARE = [

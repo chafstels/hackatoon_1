@@ -3,7 +3,7 @@ from rest_framework import serializers
 from category.models import Category
 from comment.serializers import CommentSerializer
 from like.serializers import LikeSerializer
-from .models import Book
+from .models import Book, Author, Genre
 from django.db.models import Avg
 
 
@@ -35,12 +35,12 @@ class BookDetailSerializer(serializers.ModelSerializer):
         fields = '__all__'
 
     @staticmethod
-    def is_liked(post, user):
-        return user.likes.filter(post=post).exists()
+    def is_liked(book, user):
+        return user.likes.filter(book=book).exists()
 
     @staticmethod
-    def is_favorite(post, user):
-        return user.favorites.filter(post=post).exists()
+    def is_favorite(book, user):
+        return user.favorites.filter(book=book).exists()
 
     def to_representation(self, instance):
         representation = super().to_representation(instance)
@@ -61,5 +61,17 @@ class BookDetailSerializer(serializers.ModelSerializer):
 
         return representation
 
+
+class BookCreateSerializer(serializers.ModelSerializer):
+    category = serializers.PrimaryKeyRelatedField(required=True, queryset=Category.objects.all())
+    author_id = serializers.PrimaryKeyRelatedField(required=True, queryset=Author.objects.all())
+    genre_id = serializers.PrimaryKeyRelatedField(required=True, queryset=Genre.objects.all())
+    owner_email = serializers.ReadOnlyField(source='owner.email')
+    owner = serializers.ReadOnlyField(source='owner.id')
+
+
+    class Meta:
+        model = Book
+        fields = '__all__'
 
 

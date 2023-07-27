@@ -4,7 +4,7 @@ from comment.serializers import CommentActionSerializer, CommentSerializer
 from like.models import Like, Favorite
 from like.serializers import LikedUserSerializer, FavoriteDetailSerializer
 from .models import Book
-from .serializers import BookListSerializer, BookDetailSerializer
+from .serializers import BookListSerializer, BookDetailSerializer, BookCreateSerializer
 from rest_framework.viewsets import ModelViewSet
 from rest_framework import permissions
 from .permissions import IsAuthor
@@ -31,7 +31,7 @@ class BookViewSet(ModelViewSet):
         if self.action == 'list':
             return BookListSerializer
         elif self.action in ('create', 'update', 'partial_update'):
-            return BookListSerializer
+            return BookCreateSerializer
         return BookDetailSerializer
 
 

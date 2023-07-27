@@ -27,9 +27,9 @@ from django.conf import settings
 
 schema_view = get_schema_view(
     openapi.Info(
-        title="SHOP API",
+        title="SHOP_API",
         default_version='v1',
-        description="Test description",
+        description="Hackatoon makers",
         terms_of_service="https://www.google.com/policies/terms/",
         contact=openapi.Contact(email="contact@snippets.local"),
         license=openapi.License(name="BSD License"),
