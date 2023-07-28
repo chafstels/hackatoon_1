@@ -9,27 +9,32 @@ https://docs.djangoproject.com/en/4.2/topics/settings/
 For the full list of settings and their values, see
 https://docs.djangoproject.com/en/4.2/ref/settings/
 """
-
+import os
 from pathlib import Path
 from decouple import config
 from datetime import timedelta
 
-
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
-
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/4.2/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = config('SECRET_KEY')
+# SECRET_KEY = config('SECRET_KEY')
+#
+# # SECURITY WARNING: don't run with debug turned on in production!
+# DEBUG = config('DEBUG', cast=bool)
+#
+# ALLOWED_HOSTS = config('ALLOWED_HOSTS').split()
+
+# Docker
+SECRET_KEY = 'django-insecure-pjw+-6s3@0*p6s9f&=96=c&zb)dl$0#6%2xaj%ifbvyabpw^%_'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = config('DEBUG', cast=bool)
+DEBUG = True
 
-ALLOWED_HOSTS = config('ALLOWED_HOSTS').split()
-
+ALLOWED_HOSTS = []
 
 # Application definition
 
@@ -48,7 +53,7 @@ INSTALLED_APPS = [
     "corsheaders",
     "django_filters",
 
-    #myapp
+    # myapp
     'account',
     'category',
     'rating',
@@ -56,6 +61,8 @@ INSTALLED_APPS = [
     'payment',
     'comment',
     'like',
+    'clients',
+    'services',
 ]
 
 MIDDLEWARE = [
@@ -89,21 +96,29 @@ TEMPLATES = [
 
 WSGI_APPLICATION = "shopAPI.wsgi.application"
 
-
 # Database
 # https://docs.djangoproject.com/en/4.2/ref/settings/#databases
 
+# DATABASES = {
+#     "default": {
+#         "ENGINE": "django.db.backends.postgresql",
+#         "NAME": config('NAME'),
+#         "USER": config('USER'),
+#         "PASSWORD": config('PASSWORD'),
+#         "HOST": config('HOST'),
+#         'PORT': config('PORT', cast=int),
+#     }
+# }
 DATABASES = {
-    "default": {
-        "ENGINE": "django.db.backends.postgresql",
-        "NAME": config('NAME'),
-        "USER": config('USER'),
-        "PASSWORD": config('PASSWORD'),
-        "HOST": config('HOST'),
-        'PORT': config('PORT', cast=int),
+    'default': {
+        'ENGINE': 'django.db.backends.postgresql',
+        'HOST': os.environ.get('DB_HOST'),
+        'NAME': os.environ.get('DB_NAME'),
+        'USER': os.environ.get('DB_USER'),
+        'PASSWORD': os.environ.get('DB_PASS'),
+
     }
 }
-
 
 # Password validation
 # https://docs.djangoproject.com/en/4.2/ref/settings/#auth-password-validators
@@ -123,7 +138,6 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
-
 # Internationalization
 # https://docs.djangoproject.com/en/4.2/topics/i18n/
 
@@ -136,7 +150,6 @@ USE_I18N = True
 USE_TZ = True
 
 AUTH_USER_MODEL = 'account.CustomUser'
-
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/4.2/howto/static-files/
@@ -170,3 +183,27 @@ EMAIL_HOST_PASSWORD = config('EMAIL_HOST_PASSWORD')
 TWILIO_SID = 'AC604586bbcc9ab37b1bd4655bfabc9508'
 TWILIO_AUTH_TOKEN = '4c808935bebfe92c7dc62b96f0b113c1'
 TWILIO_SENDER_PHONE = '+12176347024'
+
+LOGGING = {
+    'version': 1,
+    'handlers': {
+        'console': {'class': 'logging.StreamHandler'}
+    },
+    'loggers': {
+        'django.db.backends': {
+            'handlers': ['console'],
+            'level': 'DEBUG'  # WARNING
+        }
+    }
+}
+
+CELERY_BROKER_URL = 'redis://redis:6379/0'
+
+CACHES = {
+    "default": {
+        "BACKEND": "django_redis.cache.RedisCache",
+        "LOCATION": 'redis://redis:6379/1',
+    }
+}
+
+PRICE_CACHE_NAME = 'price_cache'

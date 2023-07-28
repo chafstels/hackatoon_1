@@ -34,3 +34,7 @@ twilio==8.5.0
 uritemplate==4.1.1
 urllib3==2.0.4
 yarl==1.9.2
+celery[redis]==5.2.7
+flower==1.2.0
+celery_singleton==0.3.1
+django-redis==5.2.0

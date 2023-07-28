@@ -24,6 +24,7 @@ from category.views import CategoryViewSet
 from books.views import BookViewSet
 from django.conf.urls.static import static
 from django.conf import settings
+from services.views import SubscriptionView
 
 schema_view = get_schema_view(
     openapi.Info(
@@ -42,6 +43,7 @@ schema_view = get_schema_view(
 router = DefaultRouter()
 router.register('categories', CategoryViewSet)
 router.register('books', BookViewSet)
+router.register('subscriptions', SubscriptionView)
 
 urlpatterns = [
     path("admin/", admin.site.urls),
